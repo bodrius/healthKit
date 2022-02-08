@@ -1,11 +1,10 @@
 import React from "react";
-import { Text, View } from "react-native";
+
+import {HealthKit} from "./src/healthKit/HealthKit"
 
 const App = () => {
   return (
-    <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-      <Text>App.js</Text>
-    </View>
+      <HealthKit/>
   );
 };
 
