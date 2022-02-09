@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 
+#import "RCTAppleHealthKit.h" // HealthKit
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -41,6 +42,7 @@ static void InitializeFlipper(UIApplication *application) {
   } else {
       rootView.backgroundColor = [UIColor whiteColor];
   }
+  [[RCTAppleHealthKit new] initializeBackgroundObservers:bridge];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
