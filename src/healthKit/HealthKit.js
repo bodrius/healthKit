@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AppleHealthKit, {
   getLatestWeight,
   saveWeight,
@@ -13,13 +13,16 @@ import {
   SafeAreaView,
   StyleSheet,
   TextInput,
-  NativeAppEventEmitter,
   ScrollView,
+  FlatList,
 } from "react-native";
 
 import { NFC } from "../NFC/NFC";
+import { useAsyncStorage } from "../AsyncStoreHook/useAsyncStore";
 
 export const HealthKit = () => {
+  const { getStorageItem } = useAsyncStorage();
+
   const permissions = {
     permissions: {
       read: [
@@ -34,43 +37,8 @@ export const HealthKit = () => {
     },
   };
 
-  useEffect(() => {
-    /* Register native listener that will be triggered when successfuly enabled */
-    NativeAppEventEmitter.addListener(
-      "healthKit:StepCount:setup:success",
-      () => {}
-    );
-
-    NativeAppEventEmitter.addListener(
-      "healthKit:StepCount:setup:failure",
-      () => {
-        console.log("FAIL=====");
-      }
-    );
-
-    NativeAppEventEmitter.addListener("healthKit:StepCount:failure", () => {
-      console.log("FAILSSSSSSS=====");
-    });
-
-    /* Register native listener that will be triggered on each update */
-    NativeAppEventEmitter.addListener("healthKit:StepCount:new", () => {
-      AppleHealthKit.getSamples(
-        {
-          startDate: new Date(2022, 2, 8).toISOString(),
-          endDate: new Date().toISOString(),
-        },
-        (err, results) => {
-          if (err) {
-            console.log("err", err);
-            return;
-          }
-          console.log("result-----", results);
-        }
-      );
-    });
-  }, []);
-
   const [steps, setSteps] = useState("");
+  const [stepsList, setStepsList] = useState([]);
   const [weight, setWeight] = useState("");
   const [heartBeat, setHeartBeat] = useState("");
 
@@ -133,6 +101,18 @@ export const HealthKit = () => {
     setWriteWeight("");
   };
 
+  const getDataAsyncStore = async () => {
+    const steps = await getStorageItem("STEPS_QTY");
+    setStepsList(steps);
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <Text>{item?.steps}</Text>
+      <Text>{new Date(item?.date).toLocaleTimeString("ru-RU")}</Text>
+    </View>
+  );
+
   return (
     <SafeAreaView
       style={{
@@ -184,7 +164,19 @@ export const HealthKit = () => {
           <Button title="getHeartBeat" onPress={getHeartBeat} />
         </View>
 
-        <NFC />
+        <View style={styles.container}>
+          <View style={styles.box}>
+            <FlatList
+              data={stepsList}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.date}
+            />
+          </View>
+
+          <Button title="getDataAsyncStore" onPress={getDataAsyncStore} />
+        </View>
+
+        {/* <NFC /> */}
       </ScrollView>
     </SafeAreaView>
   );
