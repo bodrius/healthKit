@@ -14,7 +14,10 @@ import {
   StyleSheet,
   TextInput,
   NativeAppEventEmitter,
+  ScrollView,
 } from "react-native";
+
+import { NFC } from "../NFC/NFC";
 
 export const HealthKit = () => {
   const permissions = {
@@ -137,46 +140,52 @@ export const HealthKit = () => {
         marginHorizontal: 16,
       }}
     >
-      <View style={styles.container}>
-        <View style={styles.box}>
-          <Text style={{ marginRight: 20 }}>HealthKit Steps -</Text>
-          <Text>{steps}</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.box}>
+            <Text style={{ marginRight: 20 }}>HealthKit Steps -</Text>
+            <Text>{steps}</Text>
+          </View>
+
+          <TextInput
+            style={styles.input}
+            onChangeText={setWriteSteps}
+            value={writeSteps}
+            placeholder="Enter HealthKit Steps"
+          />
+          <Button title="getDailyStepCount" onPress={getStepCounts} />
+          <Button title="setStepCounts" onPress={setStepCounts} />
         </View>
 
-        <TextInput
-          style={styles.input}
-          onChangeText={setWriteSteps}
-          value={writeSteps}
-          placeholder="Enter HealthKit Steps"
-        />
-        <Button title="getDailyStepCount" onPress={getStepCounts} />
-        <Button title="setStepCounts" onPress={setStepCounts} />
-      </View>
+        <View style={styles.container}>
+          <View style={styles.box}>
+            <Text style={{ marginRight: 20 }}>HealthKit Weight -</Text>
+            <Text>{weight}</Text>
+          </View>
 
-      <View style={styles.container}>
-        <View style={styles.box}>
-          <Text style={{ marginRight: 20 }}>HealthKit Weight -</Text>
-          <Text>{weight}</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={setWriteWeight}
+            value={writeWeight}
+            placeholder="Enter HealthKit Weight"
+          />
+          <Button title="setWeight" onPress={setUserWriteWeight} />
+          <Button title="getWeight" onPress={getWeight} />
         </View>
 
-        <TextInput
-          style={styles.input}
-          onChangeText={setWriteWeight}
-          value={writeWeight}
-          placeholder="Enter HealthKit Weight"
-        />
-        <Button title="setWeight" onPress={setUserWriteWeight} />
-        <Button title="getWeight" onPress={getWeight} />
-      </View>
+        <View style={styles.container}>
+          <View style={styles.box}>
+            <Text style={{ marginRight: 20 }}>
+              HealthKit latest HeartBeat -
+            </Text>
+            <Text>{heartBeat}</Text>
+          </View>
 
-      <View style={styles.container}>
-        <View style={styles.box}>
-          <Text style={{ marginRight: 20 }}>HealthKit latest HeartBeat -</Text>
-          <Text>{heartBeat}</Text>
+          <Button title="getHeartBeat" onPress={getHeartBeat} />
         </View>
 
-        <Button title="getHeartBeat" onPress={getHeartBeat} />
-      </View>
+        <NFC />
+      </ScrollView>
     </SafeAreaView>
   );
 };
