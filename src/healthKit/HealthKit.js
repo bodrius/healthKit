@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppleHealthKit, {
   getLatestWeight,
   saveWeight,
   getHeartRateSamples,
   saveSteps,
-  getDailyStepCountSamples,
+  getStepCount,
 } from "react-native-health";
 import {
   Text,
@@ -13,6 +13,7 @@ import {
   SafeAreaView,
   StyleSheet,
   TextInput,
+  NativeAppEventEmitter,
 } from "react-native";
 
 export const HealthKit = () => {
@@ -30,6 +31,42 @@ export const HealthKit = () => {
     },
   };
 
+  useEffect(() => {
+    /* Register native listener that will be triggered when successfuly enabled */
+    NativeAppEventEmitter.addListener(
+      "healthKit:StepCount:setup:success",
+      () => {}
+    );
+
+    NativeAppEventEmitter.addListener(
+      "healthKit:StepCount:setup:failure",
+      () => {
+        console.log("FAIL=====");
+      }
+    );
+
+    NativeAppEventEmitter.addListener("healthKit:StepCount:failure", () => {
+      console.log("FAILSSSSSSS=====");
+    });
+
+    /* Register native listener that will be triggered on each update */
+    NativeAppEventEmitter.addListener("healthKit:StepCount:new", () => {
+      AppleHealthKit.getSamples(
+        {
+          startDate: new Date(2022, 2, 8).toISOString(),
+          endDate: new Date().toISOString(),
+        },
+        (err, results) => {
+          if (err) {
+            console.log("err", err);
+            return;
+          }
+          console.log("result-----", results);
+        }
+      );
+    });
+  }, []);
+
   const [steps, setSteps] = useState("");
   const [weight, setWeight] = useState("");
   const [heartBeat, setHeartBeat] = useState("");
@@ -40,15 +77,13 @@ export const HealthKit = () => {
   AppleHealthKit.initHealthKit(permissions, (error) => {});
 
   const getStepCounts = () => {
-    getDailyStepCountSamples(
+    getStepCount(
       {
-        startDate: new Date(2022, 2, 9).toISOString(),
-        endDate: new Date(2022, 2, 10).toISOString(),
+        date: new Date().toISOString(),
       },
       (err, results) => {
-        const sumDaysSteps = results.reduce((a, b) => +a + +b.value, 0);
-
-        setSteps(sumDaysSteps);
+        // const sumDaysSteps = results.reduce((a, b) => +a + +b.value, 0);
+        setSteps(results.value);
       }
     );
   };
@@ -68,7 +103,7 @@ export const HealthKit = () => {
     getHeartRateSamples(
       { startDate: new Date(2021, 0, 0).toISOString() },
       (callbackError, results) => {
-        setHeartBeat(results[0].value);
+        setHeartBeat(results[0]?.value);
       }
     );
   };
@@ -90,9 +125,7 @@ export const HealthKit = () => {
       {
         value: writeWeight,
       },
-      (err, results) => {
-        console.log("results", results);
-      }
+      (err, results) => {}
     );
     setWriteWeight("");
   };
@@ -158,6 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginBottom: 30,
     padding: 5,
+    backgroundColor: "white",
   },
 
   box: {

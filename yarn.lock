@@ -5368,10 +5368,10 @@ react-native-codegen@^0.0.8:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-react-native-health@^1.12.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/react-native-health/-/react-native-health-1.12.0.tgz#d637be8ecebe4cd7ea05d74d1a3d07a13b5ceb91"
-  integrity sha512-2iLmFy+jyqIhuOKOR3U/MYmdhMDoFDYf1ploblgG2ufDsnAWLd7FMO9D6OMQvzwXtd9VQvoAfsjb5UicsqY8Yw==
+react-native-health@1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/react-native-health/-/react-native-health-1.10.0.tgz#c9621d95f006f5ab0a9ea3f17d2233eadf170d9c"
+  integrity sha512-qfrxiErQ8x9P7f7VAOHpiafxpmQw5bYFWAXScu2Wu/Aj/xwB1eSOCVRmmVZqSFQ35+KYuMee/qOqkkLnQx3rGQ==
   dependencies:
     "@expo/config-plugins" "^2.0.0"
 
