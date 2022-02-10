@@ -12,6 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		18A0CC8D27B2C035005D810E /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A0CC8C27B2C035005D810E /* HealthKit.framework */; };
+		18AE816927B53DC0006AA8E6 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AE816827B53DC0006AA8E6 /* RNBackgroundFetch+AppDelegate.m */; };
 		5FE37C88F3822983FBF97C22 /* libPods-healtKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DBEDB0BFB533C0AF64F0960 /* libPods-healtKit.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		DA3B72E5EBAA63CAC2EB14CD /* libPods-healtKit-healtKitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E68C5C9D42562D43C930FA1 /* libPods-healtKit-healtKitTests.a */; };
@@ -40,6 +41,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = healtKit/main.m; sourceTree = "<group>"; };
 		18A0CC8B27B2C035005D810E /* healtKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = healtKit.entitlements; path = healtKit/healtKit.entitlements; sourceTree = "<group>"; };
 		18A0CC8C27B2C035005D810E /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		18AE816827B53DC0006AA8E6 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		1E68C5C9D42562D43C930FA1 /* libPods-healtKit-healtKitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-healtKit-healtKitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DBEDB0BFB533C0AF64F0960 /* libPods-healtKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-healtKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = healtKit/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 		13B07FAE1A68108700A75B9A /* healtKit */ = {
 			isa = PBXGroup;
 			children = (
+				18AE816827B53DC0006AA8E6 /* RNBackgroundFetch+AppDelegate.m */,
 				18A0CC8B27B2C035005D810E /* healtKit.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -416,6 +419,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18AE816927B53DC0006AA8E6 /* RNBackgroundFetch+AppDelegate.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
