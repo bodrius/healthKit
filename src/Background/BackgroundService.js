@@ -1,7 +1,7 @@
+import { Alert } from "react-native";
 import React, { useEffect } from "react";
 import AppleHealthKit from "react-native-health";
 import BackgroundFetch from "react-native-background-fetch";
-import { FlatList, Text, View } from "react-native";
 
 import { useAsyncStorage } from "../AsyncStoreHook/useAsyncStore";
 
@@ -15,9 +15,14 @@ export const BackgroundService = () => {
   const initBackgroundTask = async () => {
     const onEvent = async (taskId) => {
       //YOUR LOGIC HERE
-      await getStepCounts();
 
-      BackgroundFetch.finish(taskId);
+      try {
+        await getStepCounts();
+
+        BackgroundFetch.finish(taskId);
+      } catch (error) {
+        Alert.alert("BackgroundFetch status", `${error}`);
+      }
     };
 
     const onTimeout = async (taskId) => {
@@ -29,8 +34,7 @@ export const BackgroundService = () => {
       onEvent,
       onTimeout
     );
-
-    console.log("[BackgroundFetch] configure status: ", status);
+    Alert.alert("BackgroundFetch status", `${status}`);
   };
 
   const getStepCounts = async () => {
