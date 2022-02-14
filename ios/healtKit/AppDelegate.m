@@ -5,7 +5,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <TSBackgroundFetch/TSBackgroundFetch.h>
+// #import <TSBackgroundFetch/TSBackgroundFetch.h>
 
 
 #ifdef FB_SONARKIT_ENABLED
@@ -58,7 +58,7 @@ static void InitializeFlipper(UIApplication *application) {
   [[RCTAppleHealthKit new] initializeBackgroundObservers:bridge];
 
   // [REQUIRED] Register BackgroundFetch
-  [[TSBackgroundFetch sharedInstance] didFinishLaunching];
+  // [[TSBackgroundFetch sharedInstance] didFinishLaunching];
 
   return YES;
 }
