@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppleHealthKit, {
   getLatestWeight,
   saveWeight,
@@ -15,6 +15,8 @@ import {
   TextInput,
   ScrollView,
   FlatList,
+  NativeAppEventEmitter,
+  Alert,
 } from "react-native";
 
 import { NFC } from "../NFC/NFC";
@@ -22,6 +24,10 @@ import { useAsyncStorage } from "../AsyncStoreHook/useAsyncStore";
 
 export const HealthKit = () => {
   const { getStorageItem } = useAsyncStorage();
+
+  useEffect(() => {
+    AppleHealthKit.initHealthKit(permissions, (error) => {});
+  }, []);
 
   const permissions = {
     permissions: {
@@ -32,10 +38,19 @@ export const HealthKit = () => {
         "DateOfBirth",
         "BodyMassIndex",
         AppleHealthKit.Constants.Permissions.HeartRate,
+        AppleHealthKit.Constants.Permissions.DistanceCycling,
       ],
       write: ["Weight", "StepCount", "BodyMassIndex"],
     },
   };
+
+  /* Register native listener that will be triggered when successfuly enabled */
+  NativeAppEventEmitter.addListener("healthKit:Cycling:setup:success", () =>
+    console.log("Setup Successful")
+  );
+
+  /* Register native listener that will be triggered on each update */
+  NativeAppEventEmitter.addListener("healthKit:Cycling:new", callback);
 
   const [steps, setSteps] = useState("");
   const [stepsList, setStepsList] = useState([]);
@@ -45,7 +60,23 @@ export const HealthKit = () => {
   const [writeSteps, setWriteSteps] = useState("");
   const [writeWeight, setWriteWeight] = useState("");
 
-  AppleHealthKit.initHealthKit(permissions, (error) => {});
+  const callback = () => {
+    let options = {
+      startDate: new Date(2022, 1, 1).toISOString(),
+      endDate: new Date().toISOString(),
+    };
+
+    getSamples(options, (err, results) => {
+      if (err) {
+        Alert.alert("error");
+        console.log("err", err);
+        return;
+      }
+      Alert.alert("results-->", results);
+
+      console.log("results---->>>>", results);
+    });
+  };
 
   const getStepCounts = () => {
     getStepCount(
@@ -72,7 +103,7 @@ export const HealthKit = () => {
 
   const getHeartBeat = () => {
     getHeartRateSamples(
-      { startDate: new Date(2021, 0, 0).toISOString() },
+      { startDate: new Date(2022, 0, 0).toISOString() },
       (callbackError, results) => {
         setHeartBeat(results[0]?.value);
       }
@@ -164,7 +195,7 @@ export const HealthKit = () => {
           <Button title="getHeartBeat" onPress={getHeartBeat} />
         </View>
 
-        <View style={styles.container}>
+        {/* <View style={styles.container}>
           <View style={styles.box}>
             <FlatList
               data={stepsList}
@@ -174,9 +205,9 @@ export const HealthKit = () => {
           </View>
 
           <Button title="getDataAsyncStore" onPress={getDataAsyncStore} />
-        </View>
+        </View> */}
 
-        {/* <NFC /> */}
+        <NFC />
       </ScrollView>
     </SafeAreaView>
   );
