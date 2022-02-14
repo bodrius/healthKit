@@ -25,7 +25,9 @@ export const NFC = () => {
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity onPress={readNdef}>
-        <Text>Scan a Tag</Text>
+        <Text style={{ fontWeight: "600", fontSize: 20 }}>
+          OPEN NFC SCANNER
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -37,6 +39,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 100,
     width: "100%",
-    backgroundColor: "red",
+    backgroundColor: "orange",
+    marginBottom: 40,
+    borderRadius: 10,
   },
 });
