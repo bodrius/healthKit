@@ -47,6 +47,9 @@ static void InitializeFlipper(UIApplication *application) {
       rootView.backgroundColor = [UIColor whiteColor];
   }
 
+   /* Add Background initializer for HealthKit  */
+  [[RCTAppleHealthKit new] initializeBackgroundObservers:bridge];
+
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
@@ -54,8 +57,7 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
 
-/* Add Background initializer for HealthKit  */
-  [[RCTAppleHealthKit new] initializeBackgroundObservers:bridge];
+
 
   // [REQUIRED] Register BackgroundFetch
   // [[TSBackgroundFetch sharedInstance] didFinishLaunching];

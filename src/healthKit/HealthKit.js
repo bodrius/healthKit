@@ -17,6 +17,7 @@ import {
   FlatList,
   NativeAppEventEmitter,
   Alert,
+  NativeModule,
 } from "react-native";
 
 import { NFC } from "../NFC/NFC";
@@ -49,12 +50,20 @@ export const HealthKit = () => {
     console.log("Setup Successful")
   );
 
+  /* Register native listener that will be triggered when successfuly enabled */
+  NativeAppEventEmitter.addListener("healthKit:Cycling:setup:success", () =>
+    console.log("Setup Successful")
+  );
+
   /* Register native listener that will be triggered on each update */
-  NativeAppEventEmitter.addListener("healthKit:Cycling:new", callback);
+  NativeAppEventEmitter.addListener("healthKit:HeartRate:new", callback);
+
+  /* Register native listener that will be triggered on each update */
+  NativeAppEventEmitter.addListener("healthKit:HeartRate:new", callbackHeart);
 
   const [steps, setSteps] = useState("");
-  const [stepsList, setStepsList] = useState([]);
   const [weight, setWeight] = useState("");
+  const [stepsList, setStepsList] = useState([]);
   const [heartBeat, setHeartBeat] = useState("");
 
   const [writeSteps, setWriteSteps] = useState("");
@@ -72,10 +81,34 @@ export const HealthKit = () => {
         console.log("err", err);
         return;
       }
-      Alert.alert("results-->", results);
+      setStorageSteps(results);
+      // Alert.alert("results-->", results);
 
       console.log("results---->>>>", results);
     });
+  };
+
+  const callbackHeart = () => {
+    let options = {
+      startDate: new Date(2022, 1, 1).toISOString(),
+      endDate: new Date().toISOString(),
+    };
+
+    getSamples(options, (err, results) => {
+      if (err) {
+        Alert.alert("error");
+        console.log("err", err);
+        return;
+      }
+      setStorageSteps(results);
+      // Alert.alert("results-->", results);
+
+      console.log("results---->>>>", results);
+    });
+  };
+
+  const setStorageSteps = async (results) => {
+    await setStorage("results", results);
   };
 
   const getStepCounts = () => {
@@ -133,8 +166,9 @@ export const HealthKit = () => {
   };
 
   const getDataAsyncStore = async () => {
-    const steps = await getStorageItem("STEPS_QTY");
-    setStepsList(steps);
+    const steps = await getStorageItem("results");
+    Alert.alert("Cycling--", steps);
+    // setStepsList(steps);
   };
 
   const renderItem = ({ item }) => (
@@ -195,7 +229,7 @@ export const HealthKit = () => {
           <Button title="getHeartBeat" onPress={getHeartBeat} />
         </View>
 
-        {/* <View style={styles.container}>
+        <View style={styles.container}>
           <View style={styles.box}>
             <FlatList
               data={stepsList}
@@ -205,7 +239,7 @@ export const HealthKit = () => {
           </View>
 
           <Button title="getDataAsyncStore" onPress={getDataAsyncStore} />
-        </View> */}
+        </View>
 
         <NFC />
       </ScrollView>

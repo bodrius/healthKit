@@ -1,5 +1,12 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Platform,
+} from "react-native";
 import NfcManager, { NfcTech } from "react-native-nfc-manager";
 
 // Pre-step, call this before any NFC operations
@@ -8,14 +15,17 @@ NfcManager.start();
 export const NFC = () => {
   async function readNdef() {
     try {
+      let tech = Platform.OS === "ios" ? NfcTech.Ndef : NfcTech.NfcA;
       // register for the NFC tag with NDEF in it
-      await NfcManager.requestTechnology(NfcTech.Ndef);
+      await NfcManager.requestTechnology(tech);
       // the resolved tag object will contain `ndefMessage` property
       const tag = await NfcManager.getTag();
-      console.warn("Tag found=====", tag);
-    } catch (ex) {
-      console.log("ex---", ex);
-      //   console.warn("Oops!", ex);
+      console.log("tag", tag);
+      Alert.alert("TAG", tag?.id);
+      // Alert.alert("TAG", tag.ndefMessage[0].tnf.toString());
+    } catch (error) {
+      console.log("error", error);
+      Alert.alert("error");
     } finally {
       // stop the nfc scanning
       NfcManager.cancelTechnologyRequest();
